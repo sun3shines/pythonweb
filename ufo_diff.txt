@@ -50,6 +50,9 @@ https://www.douban.com/group/topic/27862335/
 ./run.py
 http://localhost:5000
 
+
+
+
 你可以到这里下载代码：microblog-0.1.zip
 
 你可以下载 microblog-0.2.zip
@@ -322,5 +325,120 @@ restful和 db_cloumn 的方式了。是的啊。
 研究下tornado，和flask了。是的啊。
 
 多进程的方式下，就不能使用全局变量了。是的，因为并发进程间，是无法共享的了。
+
+flask项目整理了。
+
+在eclipse下如何使用？？
+
+centos7
+yum install python-flask.noarch  python2-flask-multistatic.noarch python-flask-xml-rpc.noarch python-flask-wtf.noarch python-flask-whooshalchemy.noarch python-flask-sqlalchemy.noarch python-flask-rstpages.noarch python-flask-openid.noarch python-flask-mako.noarch python-flask-cache.noarch python-flask-babel.noarch python-flask-admin.noarch
+
+
+cat test  | awk -F : '{print $1}'
+
+yum install python-flask-assets.noarch  python-flask-doc.noarch  python-flask-lastuser.noarch  python-flask-login.noarch  python-flask-mako.noarch  python-flask-oauth.noarch  python-flask-openid.noarch  python-flask-principal.noarch python-flask-rstpages.noarch python-flask-sqlalchemy.noarch python-flask-wtf.noarch python-sphinx-theme-flask.noarch python-flask.noarch 
+
+关于flask中对于response的处理
+
+如果返回的是response的类型，那么直接强制force_type 了
+如果是数据，那么 make_response，一般不指定headers和status
+
+所以，决定自己来构造response了。
+
+make_reponse 后，会执行after_request 了。
+
+
+下一步，是关于request的处理了。如何获取相关的参数的。
+
+
+        with self.request_context(environ):
+            try:
+                response = self.full_dispatch_request()
+            except Exception, e:
+                response = self.make_response(self.handle_exception(e))
+            return response(environ, start_response)
+直接生成了，request了。
+
+class RequestContext(object):
+
+    def __init__(self, app, environ):
+        self.app = app
+        self.request = app.request_class(environ)
+        self.url_adapter = app.create_url_adapter(self.request)
+        self.g = app.request_globals_class()
+        self.flashes = None
+        self.session = None
+
+requestContext 负责生成request了。
+
+match_request 负责为request进行相关的赋值了。
+
+如何访问flask的request和以及如何生成response了。
+
+
+访问request变量，需要flask.request 
+
+_request_ctx_stack = LocalStack()
+_app_ctx_stack = LocalStack()
+current_app = LocalProxy(_find_app)
+request = LocalProxy(partial(_lookup_object, 'request'))
+session = LocalProxy(partial(_lookup_object, 'session'))
+g = LocalProxy(partial(_lookup_object, 'g'))
+
+如何理解？
+
+_request_ctx_stack
+_app_ctx_stack
+
+LocalStack , LocalProxy ??
+
+先处理account函数了。
+
+区别在哪里？
+
+Request 的 body，改为data
+
+Response的body 改为 response
+
+response（app_iter = app_iter,request=req） 改为 response(response=app_iter)
+
+了解 flask 的request 和response的过程了。是的啊。
+
+关于request的处理，path，body，headers，GET
+
+关于 response的处理，status，app_iter 等。是的啊。
+
+flask的并发和全局缓存。
+
+request并发，nginx，和debug模式。
+
+全局缓存，session？
+
+pickle
+
+request 的并发，采用独立处理，一个个的处理了。localproxy 和
+local，是需要研究的。如何保证处理的request为当前的request呢？
+
+使用nginx布置flask来，实现了并发了。是的啊。
+
+mod_wsgi ,httpd 
+
+Jinja2 模板引擎和 Werkzeug WSGI 套件
+
+tornado的协程。
+
+_request_ctx_stack = LocalStack()
+_app_ctx_stack = LocalStack()
+current_app = LocalProxy(_find_app)
+request = LocalProxy(partial(_lookup_object, 'request'))
+session = LocalProxy(partial(_lookup_object, 'session'))
+g = LocalProxy(partial(_lookup_object, 'g'))
+
+研究一把并发的原理。
+
+使用apache 部署 flask，并且测试成功要求。
+
+
+
 
 
