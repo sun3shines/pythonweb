@@ -438,7 +438,63 @@ g = LocalProxy(partial(_lookup_object, 'g'))
 
 使用apache 部署 flask，并且测试成功要求。
 
+研究部署文档了。前端的部署文档了。是的啊。
 
+研究flask + mod_wsgi 部署
 
+yum install mod_wsgi.x86_64
+
+centos7 apache 安装
+
+yum install httpd
+
+systemctl enable httpd.service
+
+研究 VirtualHost 概念，以及监听的端口？？不通过浏览器，而是通过restful api
+部署了。是的了。
+
+不使用app.run因此，没有127.0.0.1，7090 了。
+
+暂时不能用apache了，因为我们写的web 服务器和mod_wsgi应该说是不支持的。有哦内部错误，需要阅读了mod_wsgi 错误了，才能更好的调试了。
+
+有可能是基本的flask hello world apache 都没有部署成功呢？是的啊。
+
+有可能 是浏览器客户端和mission 客户端的区别么？有可能，比如说apache
+对于浏览器的客户端是可以识别的，但是对于mission是无法识别的了？
+
+flask 教程和项目实战
+
+http://flask123.sinaapp.com/
+
+http://www.pythondoc.com/
+
+flask +apache 调试 过程
+
+渐进式的方式，把错误定位到了http_account_get 函数中了。是的。
+
+File "/usr/lib/python2.7/site-packages/ufs/interface/aviews.py", line 21, in
+http_account_get#012    a = ASt(path)#012  File
+"/usr/lib/python2.7/site-packages/ufs/interface/ast.py", line 16, in
+__init__#012    self.loadm()#012  File
+"/usr/lib/python2.7/site-packages/ufs/interface/ast.py", line 49, in loadm#012
+self.data = m.get()#012  File
+"/usr/lib/python2.7/site-packages/ufs/interface/meta.py", line 18, in get#012
+with open(self.path) as f:#012IOError: [Errno 13] Permission denied:
+u'/mnt/storage/she.meta'
+
+用户权限的问题了。
+
+setfacl -m u:apache:rwx /mnt/
+setfacl -d -m u:apache:rwx /mnt/
+
+解决apache权限的问题。
+
+修改 selinux配置，关闭selinux
+
+chmod 源码权限为 777 chmod -R 777 ./
+
+支持flask with  nginx
+
+研究tornado了。开始。
 
 
